@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+
+    <title>レビュー詳細</title>
+</head>
+
+<body>
+
+<div class="nagoyameshi-wrapper">
+
+    <!-- ヘッダー -->
+    <div th:replace="~{fragment :: header}"></div>
+
+    <main>
+
+        <div class="container py-5 nagoyameshi-container">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8">
+
+                    <!-- パンくず -->
+                    <nav class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/admin}">
+                                    管理ダッシュボード
+                                </a>
+                            </li>
+
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/admin/reviews}">
+                                    レビュー一覧
+                                </a>
+                            </li>
+
+                            <li class="breadcrumb-item active">
+                                レビュー詳細
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-header">
+                            <h3 class="mb-0">
+                                レビュー詳細
+                            </h3>
+                        </div>
+
+                        <div class="card-body">
+
+                            <table class="table align-middle">
+
+                                <tr>
+                                    <th width="35%">レビューID</th>
+                                    <td th:text="${review.id}"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>店舗</th>
+                                    <td>
+                                        <a th:href="@{/admin/shops/{id}(id=${review.shop.id})}"
+                                           th:text="${review.shop.name}">
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>投稿者</th>
+                                    <td th:text="${review.user.name}"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>メールアドレス</th>
+                                    <td th:text="${review.user.email}"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>評価</th>
+                                    <td>
+
+                                        <span th:each="i : ${#numbers.sequence(1,5)}">
+                                            <i th:class="${i <= review.rating}
+                                                ? 'bi bi-star-fill text-warning'
+                                                : 'bi bi-star text-secondary'"></i>
+                                        </span>
+
+                                        <span class="ms-2 text-muted"
+                                              th:text="${review.rating + '/5'}"></span>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>レビュー内容</th>
+                                    <td th:text="${review.comment}"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>投稿日</th>
+                                    <td th:text="${#dates.format(review.createdAt,'yyyy/MM/dd HH:mm')}"></td>
+                                </tr>
+
+                                <tr th:if="${review.updatedAt != null}">
+                                    <th>更新日時</th>
+                                      <td th:text="${#dates.format(review.updatedAt,'yyyy/MM/dd HH:mm')}"></td>
+                                </tr>
+
+                            </table>
+
+                            <hr>
+
+                            <!-- 削除 -->
+                            <div class="text-center mt-4">
+
+                                <form th:action="@{/admin/reviews/{id}/delete(id=${review.id})}"
+                                      method="post"
+                                      onsubmit="return confirm('このレビューを削除しますか？');">
+
+                                    <button type="submit"
+                                            class="btn btn-outline-danger">
+
+                                        レビューを削除
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                            <div class="text-center mt-4">
+
+                                <a th:href="@{/admin/reviews}">
+                                    ← レビュー一覧へ戻る
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <div th:replace="~{fragment :: footer}"></div>
+
+</div>
+
+<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

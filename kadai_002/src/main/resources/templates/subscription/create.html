@@ -1,0 +1,146 @@
+```html
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>有料会員登録</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+
+				<div class="row justify-content-center">
+
+					<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10">
+
+						<div class="card shadow-sm">
+
+							<div class="card-body p-4">
+
+								<h2 class="text-center mb-4">
+									有料会員登録
+								</h2>
+
+								<!-- 現在の会員状態 -->
+								<div class="text-center mb-4">
+
+									<span th:if="${user.membershipType == 0}"
+									      class="badge bg-secondary fs-6 px-3 py-2">
+
+										無料会員
+
+									</span>
+
+									<span th:if="${user.membershipType == 1}"
+									      class="badge bg-warning text-dark fs-6 px-3 py-2">
+
+										👑 有料会員
+
+									</span>
+
+								</div>
+
+								<!-- 無料会員のみ表示 -->
+								<div th:if="${user.membershipType == 0}">
+
+									<form th:action="@{/subscription/checkout}"
+									      method="post">
+
+										<p class="text-muted mb-3">
+											有料会員になると、限定機能をご利用いただけます。
+										</p>
+
+										<!-- 規約 -->
+										<div class="border rounded p-3 mb-4 bg-light"
+										     style="height: 220px; overflow-y: scroll;">
+
+											<h5 class="mb-3">
+												利用規約
+											</h5>
+
+											<p class="small mb-2">
+												・有料会員は月額制です。
+											</p>
+
+											<p class="small mb-2">
+												・途中解約可能です。
+											</p>
+
+											<p class="small mb-0">
+												・不正利用は禁止します。
+											</p>
+
+										</div>
+
+										<!-- 同意 -->
+										<div class="form-check mb-4">
+
+											<input class="form-check-input"
+											       type="checkbox"
+											       id="agree"
+											       required>
+
+											<label class="form-check-label"
+											       for="agree">
+
+												利用規約に同意します
+
+											</label>
+
+										</div>
+
+										<!-- ボタン -->
+										<button type="submit"
+										        class="btn btn-warning btn-lg w-100 py-2">
+
+											👑 決済へ進む
+
+										</button>
+
+									</form>
+
+								</div>
+
+								<!-- 有料会員向け -->
+								<div th:if="${user.membershipType == 1}">
+
+									<div class="alert alert-warning text-center mb-0">
+
+										既に有料会員登録済みです。
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

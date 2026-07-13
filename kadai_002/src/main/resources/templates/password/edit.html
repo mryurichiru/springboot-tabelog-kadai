@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>パスワード再設定</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+
+				<div class="row justify-content-center">
+					<div class="col-xl-5 col-lg-6 col-md-8">
+
+						<h1 class="mb-4 text-center">パスワード再設定</h1>
+						<p class="text-muted text-center mb-4">
+							新しいパスワードを入力してください。
+						</p>
+
+						<form method="post" th:action="@{/password/reset/update}" th:object="${passwordResetForm}">
+							<input type="hidden" th:field="*{token}">
+
+							<!-- 新しいパスワード -->
+
+
+							<div class="form-group row mb-3">
+
+								<div class="col-md-5">
+									<label for="newPassword" class="col-form-label text-md-left fw-bold">
+
+										<div class="d-flex align-items-center">
+											<span class="me-1">新しいパスワード</span>
+											<span class="badge bg-danger">必須</span>
+										</div>
+
+									</label>
+								</div>
+
+								<div class="col-md-7">
+
+									<div th:if="${#fields.hasErrors('newPassword')}" class="text-danger small mb-2"
+										th:errors="*{newPassword}">
+									</div>
+
+									<input type="password" class="form-control" th:field="*{newPassword}">
+								</div>
+							</div>
+
+							<!-- 確認用 -->
+							<div class="form-group row mb-4">
+
+								<div class="col-md-5">
+									<label for="passwordConfirmation" class="col-form-label text-md-left fw-bold">
+
+										<div class="d-flex align-items-center">
+											<span class="me-1">確認用パスワード</span>
+											<span class="badge bg-danger">必須</span>
+										</div>
+
+									</label>
+								</div>
+
+								<div class="col-md-7">
+
+									<div th:if="${#fields.hasErrors('passwordConfirmation')}"
+										class="text-danger small mb-2" th:errors="*{passwordConfirmation}">
+									</div>
+
+									<input type="password" class="form-control" th:field="*{passwordConfirmation}">
+								</div>
+							</div>
+
+							<!-- ボタン -->
+							<div class="form-group d-flex justify-content-center">
+								<button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">
+
+									パスワードを再設定
+								</button>
+							</div>
+							<div class="text-center mt-4">
+								<a th:href="@{/login}">
+									ログイン画面へ戻る
+								</a>
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+
+			</div>
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

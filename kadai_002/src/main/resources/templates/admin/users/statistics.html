@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>会員集計</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+
+				<h1 class="mb-4 text-center">会員集計</h1>
+
+				<div class="row">
+
+					<div class="col-md-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<h6 class="text-muted">総会員数</h6>
+								<h2 th:text="${totalUsers} + '人'"></h2>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<h6 class="text-muted">無料会員</h6>
+								<h2 th:text="${freeUsers} + '人'"></h2>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<h6 class="text-muted">有料会員</h6>
+								<h2 th:text="${paidUsers} + '人'"></h2>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row">
+
+					<div class="col-md-6 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<h6 class="text-muted">認証済み</h6>
+								<h2 th:text="${enabledUsers} + '人'"></h2>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 mb-4">
+						<div class="card shadow-sm text-center">
+							<div class="card-body">
+								<h6 class="text-muted">未認証</h6>
+								<h2 th:text="${disabledUsers} + '人'"></h2>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+	<script th:src="@{/js/preview.js}"></script>
+</body>
+
+</html>

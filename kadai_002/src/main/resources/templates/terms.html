@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>会員情報</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<!--main class="container my-5" style="max-width: 800px;"-->
+		<main>
+			<div class="container nagoyameshi-container pb-5">
+				<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb mb-0">
+						<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+						<li class="breadcrumb-item active" aria-current="page">利用規約</li>
+					</ol>
+				</nav>
+
+				<div class="row justify-content-center">
+					<div class="col-md-8 col-lg-6">
+						<h1 class="mb-4 text-center">利用規約</h1>
+						<div class="card p-4 shadow-sm">
+							<h2>第1条（規約の適用）</h2>
+							<p class="text-muted fs-6">
+								本規約は、株式会社NAGOYAMESHI（以下、「当社」）が提供するサービス「NAGOYAMESHI」の利用条件を定めるものです。ユーザーの皆様は、本規約に従って本サービスをご利用いただけます。
+							</p>
+
+							<h2 class="mt-4">第2条（会員登録）</h2>
+							<p class="text-muted fs-6">本サービスの利用を希望する者は、本規約に同意の上、当社の定める方法によって会員登録を行うものとします。</p>
+
+							<h2 class="mt-4">第3条（禁止事項）</h2>
+							<p class="text-muted fs-6">
+								ユーザーは、本サービスの利用にあたり、法令または公序良俗に反する行為、他のユーザーや第三者に不利益を与える行為を行ってはならないものとします。</p>
+
+						</div>
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

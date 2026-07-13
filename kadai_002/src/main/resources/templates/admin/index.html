@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>会員一覧</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+
+		    <div class="container py-5 nagoyameshi-container">
+
+		        <!-- あいさつ -->
+		        <div class="alert alert-light shadow-sm border-0 mb-5">
+
+		            <h2 class="mb-2">
+		                こんにちは、
+		                <span sec:authentication="principal.user.name"></span>
+		                さん 👋
+		            </h2>
+
+		            <p class="text-muted mb-0">
+		                今日もNAGOYAMESHIの管理を頑張りましょう！
+		            </p>
+
+		        </div>
+
+		        <!-- 集計 -->
+		        <div class="row g-4 mb-5">
+
+		            <div class="col-md-3">
+		                <a th:href="@{/admin/users}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card shadow-sm border-0 text-center admin-card dashboard-count">
+
+		                        <div class="card-body">
+
+		                            <i class="bi bi-people-fill display-5"></i>
+
+		                            <h2 class="mt-3"
+		                                th:text="${userCount}">
+		                            </h2>
+
+		                            <div class="text-muted">
+		                                会員数
+		                            </div>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-3">
+		                <a th:href="@{/admin/shops}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card shadow-sm border-0 text-center admin-card dashboard-count">
+
+		                        <div class="card-body">
+
+		                            <i class="bi bi-shop display-5"></i>
+
+		                            <h2 class="mt-3"
+		                                th:text="${shopCount}">
+		                            </h2>
+
+		                            <div class="text-muted">
+		                                店舗数
+		                            </div>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-3">
+		                <a th:href="@{/admin/reservations}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card shadow-sm border-0 text-center admin-card dashboard-count">
+
+		                        <div class="card-body">
+
+		                            <i class="bi bi-calendar-check-fill display-5"></i>
+
+		                            <h2 class="mt-3"
+		                                th:text="${reservationCount}">
+		                            </h2>
+
+		                            <div class="text-muted">
+		                                予約数
+		                            </div>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-3">
+		                <a th:href="@{/admin/reviews}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card shadow-sm border-0 text-center admin-card dashboard-count">
+
+		                        <div class="card-body">
+
+		                            <i class="bi bi-star-fill display-5"></i>
+
+		                            <h2 class="mt-3"
+		                                th:text="${reviewCount}">
+		                            </h2>
+
+		                            <div class="text-muted">
+		                                レビュー数
+		                            </div>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		        </div>
+
+		        <!-- 管理メニュー -->
+		        <h3 class="mb-4">
+		            管理メニュー
+		        </h3>
+
+		        <div class="row g-4">
+
+		            <div class="col-md-6 col-lg-4">
+		                <a th:href="@{/admin/users}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card admin-card h-100 shadow-sm">
+
+		                        <div class="card-body text-center">
+
+		                            <i class="bi bi-people-fill display-4"></i>
+
+		                            <h5 class="mt-3">
+		                                会員管理
+		                            </h5>
+
+		                            <p class="text-muted">
+		                                会員の検索・編集・削除
+		                            </p>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-6 col-lg-4">
+		                <a th:href="@{/admin/shops}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card admin-card h-100 shadow-sm">
+
+		                        <div class="card-body text-center">
+
+		                            <i class="bi bi-shop display-4"></i>
+
+		                            <h5 class="mt-3">
+		                                店舗管理
+		                            </h5>
+
+		                            <p class="text-muted">
+		                                店舗の登録・編集・削除
+		                            </p>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-6 col-lg-4">
+		                <a th:href="@{/admin/categories}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card admin-card h-100 shadow-sm">
+
+		                        <div class="card-body text-center">
+
+		                            <i class="bi bi-tags-fill display-4"></i>
+
+		                            <h5 class="mt-3">
+		                                カテゴリ管理
+		                            </h5>
+
+		                            <p class="text-muted">
+		                                カテゴリの登録・編集・削除
+		                            </p>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-6 col-lg-4">
+		                <a th:href="@{/admin/reservations}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card admin-card h-100 shadow-sm">
+
+		                        <div class="card-body text-center">
+
+		                            <i class="bi bi-calendar-check-fill display-4"></i>
+
+		                            <h5 class="mt-3">
+		                                予約管理
+		                            </h5>
+
+		                            <p class="text-muted">
+		                                予約の確認・キャンセル
+		                            </p>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-6 col-lg-4">
+		                <a th:href="@{/admin/reviews}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card admin-card h-100 shadow-sm">
+
+		                        <div class="card-body text-center">
+
+		                            <i class="bi bi-star-fill display-4"></i>
+
+		                            <h5 class="mt-3">
+		                                レビュー管理
+		                            </h5>
+
+		                            <p class="text-muted">
+		                                レビューの確認・削除
+		                            </p>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+
+		            <div class="col-md-6 col-lg-4">
+		                <a th:href="@{/admin/users/statistics}"
+		                   class="text-decoration-none text-dark">
+
+		                    <div class="card admin-card h-100 shadow-sm">
+
+		                        <div class="card-body text-center">
+
+		                            <i class="bi bi-bar-chart-fill display-4"></i>
+
+		                            <h5 class="mt-3">
+		                                会員集計
+		                            </h5>
+
+		                            <p class="text-muted">
+		                                会員・店舗・予約などの集計
+		                            </p>
+
+		                        </div>
+
+		                    </div>
+
+		                </a>
+		            </div>
+					<div class="col-md-6 col-lg-4">
+					    <a th:href="@{/admin/sales}"
+					       class="text-decoration-none text-dark">
+
+					        <div class="card admin-card h-100 shadow-sm">
+
+					            <div class="card-body text-center">
+
+					                <i class="bi bi-cash-stack display-4 text-success"></i>
+
+					                <h5 class="mt-3">
+					                    売上管理
+					                </h5>
+
+					                <p class="text-muted">
+					                    Stripeの売上を期間別に集計・確認
+					                </p>
+
+					            </div>
+
+					        </div>
+
+					    </a>
+					</div>
+					
+		        </div>
+
+		        <!-- プロフィール -->
+		        <div class="text-center mt-5">
+
+		            <a th:href="@{/admin/profile}"
+		               class="btn btn-outline-secondary">
+
+		                <i class="bi bi-person-circle me-2"></i>
+
+		                管理者プロフィール
+
+		            </a>
+
+		        </div>
+
+		    </div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+
+    <title>会員情報編集</title>
+</head>
+
+<body>
+<div class="nagoyameshi-wrapper">
+
+    <!-- ヘッダー -->
+    <div th:replace="~{fragment :: header}"></div>
+
+    <main>
+        <div class="container pb-5 nagoyameshi-container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-8">
+
+                    <nav class="my-3" style="--bs-breadcrumb-divider:'>';">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/admin/users}">会員一覧</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                会員情報編集
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <h1 class="mb-4 text-center">会員情報編集</h1>
+
+                    <form method="post"
+                          th:action="@{/admin/users/{id}/update(id=*{id})}"
+                          th:object="${adminUserEditForm}">
+
+                        <input type="hidden" th:field="*{id}">
+
+                        <!-- ID -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                ID
+                            </label>
+
+                            <div class="col-md-8 pt-2">
+                                <span th:text="*{id}"></span>
+                            </div>
+                        </div>
+
+                        <!-- 氏名 -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                氏名
+                            </label>
+
+                            <div class="col-md-8">
+                                <div class="text-danger small"
+                                     th:errors="*{name}"></div>
+
+                                <input class="form-control"
+                                       type="text"
+                                       th:field="*{name}">
+                            </div>
+                        </div>
+
+                        <!-- フリガナ -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                フリガナ
+                            </label>
+
+                            <div class="col-md-8">
+                                <div class="text-danger small"
+                                     th:errors="*{furigana}"></div>
+
+                                <input class="form-control"
+                                       type="text"
+                                       th:field="*{furigana}">
+                            </div>
+                        </div>
+
+                        <!-- メール -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                メールアドレス
+                            </label>
+
+                            <div class="col-md-8">
+                                <div class="text-danger small"
+                                     th:errors="*{email}"></div>
+
+                                <input class="form-control"
+                                       type="email"
+                                       th:field="*{email}">
+                            </div>
+                        </div>
+
+                        <!-- 電話番号 -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                電話番号
+                            </label>
+
+                            <div class="col-md-8">
+                                <div class="text-danger small"
+                                     th:errors="*{phoneNumber}"></div>
+
+                                <input class="form-control"
+                                       type="text"
+                                       th:field="*{phoneNumber}">
+                            </div>
+                        </div>
+
+                        <!-- 生年月日 -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                生年月日
+                            </label>
+
+                            <div class="col-md-8">
+                                <input class="form-control"
+                                       type="date"
+                                       th:field="*{dateOfBirth}">
+                            </div>
+                        </div>
+
+                        <!-- 職業 -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                職業
+                            </label>
+
+                            <div class="col-md-8">
+                                <input class="form-control"
+                                       type="text"
+                                       th:field="*{occupation}">
+                            </div>
+                        </div>
+
+                        <!-- 会員種別 -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                会員種別
+                            </label>
+
+                            <div class="col-md-8">
+                                <select class="form-select"
+                                        th:field="*{membershipType}">
+                                    <option value="0">無料会員</option>
+                                    <option value="1">有料会員</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ロール -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                ロール
+                            </label>
+
+                            <div class="col-md-8">
+                                <select class="form-select"
+                                        th:field="*{roleId}">
+                                    <option
+                                            th:each="role : ${roles}"
+                                            th:value="${role.id}"
+                                            th:text="${role.name}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 有効 -->
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                有効
+                            </label>
+
+                            <div class="col-md-8 pt-2">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       th:field="*{enabled}">
+                            </div>
+                        </div>
+
+                        <!-- 登録日時 -->
+                        <div class="row mb-4">
+                            <label class="col-md-4 col-form-label fw-bold">
+                                登録日時
+                            </label>
+
+                            <div class="col-md-8 pt-2">
+                                <span th:text="${#dates.format(user.createdAt,'yyyy/MM/dd HH:mm')}"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit"
+                                    class="btn text-white shadow-sm nagoyameshi-btn">
+                                更新
+                            </button>
+							
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <div th:replace="~{fragment :: footer}"></div>
+
+</div>
+
+<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+</html>

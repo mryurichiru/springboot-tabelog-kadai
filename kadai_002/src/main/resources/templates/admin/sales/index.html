@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>売上管理</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+
+			<div class="container py-5 nagoyameshi-container">
+
+				<!-- ページタイトル -->
+				<div class="mb-5">
+
+					<h2 class="fw-bold">
+						<i class="bi bi-cash-stack text-success me-2"></i>
+						売上管理
+					</h2>
+
+					<p class="text-muted">
+						Stripeの売上を期間別に集計できます。
+					</p>
+
+				</div>
+
+				<!-- 検索条件 -->
+				<div class="card shadow-sm border-0 mb-5">
+
+					<div class="card-header bg-white fw-bold">
+						集計条件
+					</div>
+
+					<div class="card-body">
+
+						<form th:action="@{/admin/sales}" th:object="${salesSearchForm}" method="post">
+
+							<div class="row align-items-end">
+
+								<div class="col-md-4 mb-3">
+
+									<label class="form-label">
+										開始日
+									</label>
+
+									<input type="date" class="form-control" th:field="*{startDate}">
+
+								</div>
+
+								<div class="col-md-4 mb-3">
+
+									<label class="form-label">
+										終了日
+									</label>
+
+									<input type="date" class="form-control" th:field="*{endDate}">
+
+								</div>
+
+								<div class="col-md-4 mb-3">
+
+									<button type="submit" class="btn btn-success w-100">
+
+										<i class="bi bi-search me-1"></i>
+
+										集計する
+
+									</button>
+
+								</div>
+
+							</div>
+
+						</form>
+
+					</div>
+
+				</div>
+
+				<!-- 集計結果 -->
+				<div th:if="${summary != null}" class="card shadow-sm border-0">
+
+					<div class="card-header bg-white fw-bold">
+
+						集計結果
+
+					</div>
+					<p class="text-muted mb-4">
+						対象期間：
+						<span th:text="${salesSearchForm.startDate}"></span>
+						～
+						<span th:text="${salesSearchForm.endDate}"></span>
+					</p>
+
+					<div class="card-body">
+
+						<div class="row text-center">
+
+							<div class="col-md-6">
+
+								<i class="bi bi-currency-yen display-4 text-success"></i>
+
+								<h6 class="text-muted mt-3">
+									売上金額
+								</h6>
+
+								<h2 class="fw-bold text-success">
+
+									¥<span th:text="${#numbers.formatInteger(summary.totalAmount, 3, 'COMMA')}"></span>
+
+								</h2>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<i class="bi bi-receipt display-4 text-primary"></i>
+
+								<h6 class="text-muted mt-3">
+									決済件数
+								</h6>
+
+								<h2 class="fw-bold text-primary">
+
+									<span th:text="${summary.paymentCount}"></span> 件
+
+								</h2>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+				<!--csvダウンロード-->
+				<div th:if="${summary != null}" class="text-end mt-3">
+
+					<a class="btn btn-outline-success" th:href="@{/admin/sales/csv(
+				            startDate=${salesSearchForm.startDate},
+				            endDate=${salesSearchForm.endDate})}">
+						<i class="bi bi-download me-2"></i>
+						CSVダウンロード
+					</a>
+				</div>
+
+				<!-- 戻るボタン -->
+				<div class="text-center mt-5">
+
+					<a th:href="@{/admin}" class="btn btn-outline-secondary">
+
+						<i class="bi bi-arrow-left me-2"></i>
+
+						管理者ダッシュボードへ戻る
+
+					</a>
+
+				</div>
+
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

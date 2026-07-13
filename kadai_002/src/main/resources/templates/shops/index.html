@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>店舗一覧</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container nagoyameshi-container pb-5">
+				<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb mb-0">
+						<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+						<li class="breadcrumb-item active" aria-current="page">店舗一覧</li>
+					</ol>
+				</nav>
+
+				<div class="row justify-content-center">
+
+					<div class="col-xl-3 col-lg-4 col-md-12">
+						<form method="get" th:action="@{/shops}" class="w-100 mb-3">
+							<div class="card mb-3">
+								<div class="card-header font-weight-bold">
+									店舗を検索・絞り込み
+								</div>
+
+								<div class="card-body">
+									<div class="form-group mb-3">
+										<label class="form-label text-muted small fw-bold">キーワード</label>
+										<div class="input-group">
+											<input type="text" class="form-control" name="keyword" th:value="${keyword}"
+												placeholder="店舗名・住所">
+										</div>
+									</div>
+
+									<div class="form-group mb-3">
+										<label class="form-label text-muted small fw-bold">カテゴリ</label>
+										<select class="form-control form-select" name="category">
+											<option value="">選択してください</option>
+											<option th:each="category : ${categories}" th:value="${category.name}"
+												th:text="${category.name}"
+												th:selected="${category.name == selectedCategory}">
+											</option>
+										</select>
+									</div>
+
+									<div class="form-group mb-3">
+										<label class="form-label text-muted small fw-bold">予算（上限）</label>
+										<select class="form-control form-select" name="priceRange">
+											<option value="">選択してください</option>
+											<option value="1000" th:selected="${priceRange == 1000}">～1000円</option>
+											<option value="3000" th:selected="${priceRange == 3000}">～3000円</option>
+											<option value="5000" th:selected="${priceRange == 5000}">～5000円</option>
+											<option value="10000" th:selected="${priceRange == 10000}">～10000円</option>
+										</select>
+									</div>
+
+									<div class="form-group mb-4">
+										<label class="form-label text-muted small fw-bold">並び替え</label>
+										<select class="form-control form-select" name="sort">
+											<option value="">標準</option>
+											<option value="createdAtDesc" th:selected="${sort == 'createdAtDesc'}">新着順
+											</option>
+											<option value="nameAsc" th:selected="${sort == 'nameAsc'}">店名（昇順）</option>
+											<option value="nameDesc" th:selected="${sort == 'nameDesc'}">店名（降順）</option>
+											<option value="priceRangeAsc" th:selected="${sort == 'priceRangeAsc'}">
+												予算（昇順）</option>
+											<option value="priceRangeDesc" th:selected="${sort == 'priceRangeDesc'}">
+												予算（降順）</option>
+										</select>
+									</div>
+
+									<button type="submit" class="btn text-white shadow-sm w-100 nagoyameshi-btn">
+										検索
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="col-xl-8 col-lg-8 col-md-12">
+						<div class="d-flex justify-content-between flex-wrap">
+							<p th:if="${shopPage.getTotalPages() > 1}" class="fs-5 mb-3"
+								th:text="${'検索結果：' + shopPage.getTotalElements() + '件' + '（' + (shopPage.getNumber() + 1) + ' / ' + shopPage.getTotalPages() + ' ページ）'}">
+							</p>
+							<p th:unless="${shopPage.getTotalPages() > 1}" class="fs-5 mb-3"
+								th:text="${'検索結果：' + shopPage.getTotalElements() + '件'}"></p>
+						</div>
+
+						<div class="mb-3" th:each="shop : ${shopPage}">
+							<a th:href="@{/shops/__${shop.getId()}__}" class="link-dark nagoyameshi-card-link">
+								<div class="card h-100">
+									<div class="row g-0">
+										<div class="col-md-4">
+											<img th:if="${shop.imageName != null and !shop.imageName.isEmpty()}"
+											     th:src="@{/storage/__${shop.imageName}__}"
+											     class="card-img-top nagoyameshi-horizontal-card-image"
+											     alt="店舗画像">
+
+											<img th:unless="${shop.imageName != null and !shop.imageName.isEmpty()}"
+											     th:src="@{/images/noImage.png}"
+											     class="card-img-top nagoyameshi-horizontal-card-image"
+											     alt="NO IMAGE">
+											 </div>
+										<div class="col-md-8">
+											<div class="card-body">
+												<h3 class="card-title mb-3" th:text="${shop.getName()}"></h3>
+												<hr class="mb-3">
+												<p class="card-text mb-2">
+													<span th:text="${shop.getDescription()}"></span>
+												</p>
+												<p class="card-text mb-2">
+													<small class="text-muted"
+														th:text="${'〒' + shop.getPostalCode()}"></small>
+													<small class="text-muted" th:text="${shop.getAddress()}"></small>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<!--ページネーション-->
+						<div th:if="${shopPage.getTotalPages() > 1}" class="d-flex justify-content-center">
+							<nav aria-label="店舗一覧ページ">
+								<ul class="pagination">
+									<li class="page-item">
+										<span th:if="${shopPage.isFirst()}" class="page-link disabled">前</span>
+										<a th:unless="${shopPage.isFirst()}"
+											th:href="@{/shops(page = ${shopPage.getNumber() - 1}, keyword = ${keyword}, area = ${area}, price = ${price})}"
+											class="page-link nagoyameshi-page-link">前</a>
+									</li>
+									<li th:each="i : ${#numbers.sequence(0, shopPage.getTotalPages() - 1)}"
+										class="page-item">
+										<span th:if="${i == shopPage.getNumber()}"
+											class="page-link active nagoyameshi-active" th:text="${i + 1}"></span>
+										<a th:unless="${i == shopPage.getNumber()}"
+											th:href="@{/shops(page = ${i}, keyword = ${keyword}, area = ${area}, price = ${price})}"
+											class="page-link nagoyameshi-page-link" th:text="${i + 1}"></a>
+									</li>
+									<li class="page-item">
+										<span th:if="${shopPage.isLast()}" class="page-link disabled">次</span>
+										<a th:unless="${shopPage.isLast()}"
+											th:href="@{/shops(page = ${shopPage.getNumber() + 1}, keyword = ${keyword}, area = ${area}, price = ${price})}"
+											class="page-link nagoyameshi-page-link">次</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		
+<!--フッター-->
+		<div th:replace="~{fragment :: footer}"></div>
+		<div th:replace="~{fragment :: scripts}"></div>
+	</div>
+</body>
+
+</html>

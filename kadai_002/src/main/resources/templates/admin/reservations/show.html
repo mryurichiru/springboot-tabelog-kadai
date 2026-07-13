@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>予約詳細</title>
+</head>
+
+<body>
+
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+
+			<div class="container py-5 nagoyameshi-container">
+
+				<div class="row justify-content-center">
+
+					<div class="col-lg-8">
+
+						<!-- パンくず -->
+						<nav class="mb-4">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a th:href="@{/admin}">
+										管理ダッシュボード
+									</a>
+								</li>
+
+								<li class="breadcrumb-item">
+									<a th:href="@{/admin/reservations}">
+										予約一覧
+									</a>
+								</li>
+
+								<li class="breadcrumb-item active">
+									予約詳細
+								</li>
+							</ol>
+						</nav>
+
+						<div class="card shadow-sm">
+
+							<div class="card-header">
+								<h3 class="mb-0">
+									予約詳細
+								</h3>
+							</div>
+
+							<div class="card-body">
+
+								<table class="table align-middle">
+
+									<tr>
+										<th width="35%">予約ID</th>
+										<td th:text="${reservation.id}"></td>
+									</tr>
+
+									<tr>
+										<th>店舗名</th>
+										<td th:text="${reservation.shop.name}"></td>
+									</tr>
+
+									<tr>
+										<th>予約者</th>
+										<td th:text="${reservation.user.name}"></td>
+									</tr>
+
+									<tr>
+										<th>メールアドレス</th>
+										<td th:text="${reservation.user.email}"></td>
+									</tr>
+
+									<tr>
+										<th>電話番号</th>
+										<td th:text="${reservation.user.phoneNumber}"></td>
+									</tr>
+
+									<tr>
+										<th>予約日時</th>
+										<td
+											th:text="${#temporals.format(reservation.reservationDatetime,'yyyy/MM/dd HH:mm')}">
+										</td>
+									</tr>
+
+									<tr>
+										<th>人数</th>
+										<td th:text="${reservation.numberOfPeople + '名'}"></td>
+									</tr>
+
+									<tr>
+										<th>ステータス</th>
+										<td>
+
+											<span class="badge bg-success"
+												th:if="${reservation.status.name() == 'CONFIRMED'}">
+												予約済
+											</span>
+
+											<span class="badge bg-primary"
+												th:if="${reservation.status.name() == 'VISITED'}">
+												来店済
+											</span>
+
+											<span class="badge bg-danger"
+												th:if="${reservation.status.name() == 'CANCELLED'}">
+												キャンセル
+											</span>
+
+										</td>
+									</tr>
+
+									<tr>
+										<th>登録日時</th>
+										<td th:text="${#temporals.format(reservation.createdAt,'yyyy/MM/dd HH:mm')}">
+										</td>
+									</tr>
+
+								</table>
+
+								</table>
+
+								<!-- ステータス変更 -->
+								<div class="d-flex justify-content-center gap-3 mt-4"
+									th:if="${reservation.status.name() == 'CONFIRMED'}">
+
+									<form th:action="@{/admin/reservations/{id}/visit(id=${reservation.id})}"
+										method="post">
+
+										<button type="submit" class="btn btn-success">
+											来店済みにする
+										</button>
+
+									</form>
+
+									<form th:action="@{/admin/reservations/{id}/cancel(id=${reservation.id})}"
+										method="post" onsubmit="return confirm('この予約をキャンセルしますか？');">
+
+										<button type="submit" class="btn btn-warning">
+											キャンセルにする
+										</button>
+
+									</form>
+
+								</div>
+
+								<!-- ステータス表示 -->
+								<div class="text-center mt-4" th:if="${reservation.status.name() == 'VISITED'}">
+
+									<span class="badge bg-primary fs-6">
+										この予約は来店済みです
+									</span>
+
+								</div>
+
+								<div class="text-center mt-4" th:if="${reservation.status.name() == 'CANCELLED'}">
+
+									<span class="badge bg-danger fs-6">
+										この予約はキャンセル済みです
+									</span>
+
+								</div>
+
+								<hr>
+
+								<!-- 削除 -->
+								<div class="text-center mt-4">
+
+									<form th:action="@{/admin/reservations/{id}/delete(id=${reservation.id})}"
+										method="post" onsubmit="return confirm('この予約を削除しますか？');">
+
+										<button type="submit" class="btn btn-outline-danger">
+											予約を削除
+										</button>
+
+									</form>
+
+								</div>
+
+								<div class="text-center mt-4">
+									<a th:href="@{/admin/reservations}">
+										← 予約一覧へ戻る
+									</a>
+								</div>
+
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

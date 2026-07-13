@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>予約確認</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+
+				<!-- パンくず -->
+				<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+					<ol class="breadcrumb mb-0">
+						<li class="breadcrumb-item"> <a th:href="@{/}">ホーム</a> </li>
+						<li class="breadcrumb-item"> <a th:href="@{/shops}">店舗一覧</a> </li>
+						<li class="breadcrumb-item"> <a th:href="@{/shops/{id}(id=${shop.id})}" th:text="${shop.name}">
+							</a> </li>
+						<li class="breadcrumb-item active" aria-current="page"> 予約確認 </li>
+					</ol>
+				</nav>
+
+				<div class="row justify-content-center">
+
+					<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10">
+
+						<div class="card shadow-sm">
+
+							<div class="card-body p-4">
+
+								<h2 class="text-center mb-4">
+									予約内容確認
+								</h2>
+
+								<!-- 店舗名 -->
+								<div class="mb-3"> <label class="form-label fw-bold"> 店舗名 </label>
+									<p class="form-control-plaintext" th:text="${shop.name}"> </p>
+								</div> <!-- 予約日時 -->
+								<div class="mb-3"> <label class="form-label fw-bold"> 予約日時 </label>
+									<p class="form-control-plaintext"
+										th:text="${#temporals.format( reservationInputForm.reservationDatetime, 'yyyy/MM/dd HH:mm')}">
+									</p>
+								</div> <!-- 人数 -->
+								<div class="mb-4"> <label class="form-label fw-bold"> 予約人数 </label>
+									<p class="form-control-plaintext"> <span
+											th:text="${reservationInputForm.numberOfPeople}"> </span>名 </p>
+								</div>
+
+								<form method="post" th:action="@{/shops/__${shop.id}__/reservations/create}">
+
+									<input type="hidden" th:field="${reservationInputForm.reservationDatetime}">
+
+									<input type="hidden" th:field="${reservationInputForm.numberOfPeople}">
+
+									<div class="d-grid gap-2"> <button type="submit"
+											class="btn text-white shadow-sm nagoyameshi-btn"> 予約を確定する </button>
+										<a th:href="@{/shops/{id}(id=${shop.id})}" class="btn btn-outline-secondary"> 戻る
+										</a>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

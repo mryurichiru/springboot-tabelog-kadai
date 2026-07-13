@@ -1,0 +1,159 @@
+-- ① もし古いデータベースが存在したら、丸ごと一回消し去る
+--DROP DATABASE IF EXISTS nagoyameshi_db;
+
+-- ② まっさらな状態で、もう一度データベースを作り直す
+--CREATE DATABASE nagoyameshi_db;
+
+-- ③ 作ったデータベースを使うよう指示する
+--USE nagoyameshi_db;
+
+DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS reservations;
+DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS password_reset_tokens;
+DROP TABLE IF EXISTS verification_tokens;
+DROP TABLE IF EXISTS shop_categories;
+
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS shops;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS roles;
+
+CREATE TABLE IF NOT EXISTS categories (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS shops (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	description VARCHAR(255) NOT NULL,
+	phone_number VARCHAR(50) NOT NULL,
+	email VARCHAR(255),
+	price_range INTEGER NOT NULL DEFAULT 2,
+	opening_time TIME NOT NULL,
+	closing_time TIME NOT NULL,
+	holiday VARCHAR(100),
+	image_name VARCHAR(255),
+	postal_code VARCHAR(50) NOT NULL,
+	address VARCHAR(255) NOT NULL,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS shop_categories (
+    shop_id INT NOT NULL,
+    category_id INT NOT NULL,
+
+    PRIMARY KEY(shop_id, category_id),
+
+    CONSTRAINT fk_shop_categories_shop
+        FOREIGN KEY(shop_id)
+        REFERENCES shops(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT,
+
+    CONSTRAINT fk_shop_categories_category
+        FOREIGN KEY(category_id)
+        REFERENCES categories(id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS roles (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS users(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	furigana VARCHAR(50) NOT NULL,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL,    
+	phone_number VARCHAR(50) NOT NULL,
+    membership_type INT NOT NULL, 
+    date_of_birth DATE,
+    occupation VARCHAR(50),
+    role_id INT NOT NULL,
+    enabled BOOLEAN NOT NULL,
+	stripe_customer_id VARCHAR(255),
+	stripe_subscription_id VARCHAR(255),
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	
+	CONSTRAINT fk_users_role
+        FOREIGN KEY (role_id)
+        REFERENCES roles(id)
+);
+
+CREATE TABLE IF NOT EXISTS verification_tokens (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    token VARCHAR(255) NOT NULL,        
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) 
+);
+
+
+CREATE TABLE IF NOT EXISTS reservations(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	shop_id INT NOT NULL,
+	user_id INT NOT NULL,
+	reservation_datetime DATETIME NOT NULL,
+	number_of_people INT NOT NULL DEFAULT 1,
+	status VARCHAR(20) NOT NULL DEFAULT 'CONFIRMED',
+	
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	
+	UNIQUE(shop_id, reservation_datetime),
+	
+	CONSTRAINT fk_reservations_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_reservations_shop
+        FOREIGN KEY (shop_id)
+        REFERENCES shops(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS favorites(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	user_id INT NOT NULL,
+	shop_id INT NOT NULL,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	FOREIGN KEY(shop_id) REFERENCES shops (id),
+	FOREIGN KEY(user_id) REFERENCES users (id),
+	UNIQUE (user_id, shop_id)
+);
+
+
+CREATE TABLE IF NOT EXISTS reviews(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	user_id INT NOT NULL,
+	shop_id INT NOT NULL,
+	rating INT NOT NULL,
+	comment VARCHAR(255) NOT NULL,
+	created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE,
+	FOREIGN KEY(shop_id) REFERENCES shops (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    token VARCHAR(255) NOT NULL,      
+    expires_at DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) 
+);

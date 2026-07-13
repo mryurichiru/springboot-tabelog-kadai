@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>お気に入り一覧</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+
+				<h1 class="mb-4">お気に入り一覧</h1>
+
+				<div th:if="${favoritePage.isEmpty()}">
+
+					<div class="alert alert-info">
+						お気に入りに登録した店舗はありません。
+					</div>
+
+				</div>
+
+				<div th:unless="${favoritePage.isEmpty()}">
+
+					<div class="card h-100 mb-3" th:each="favorite : ${favoritePage.content}">
+
+						<a th:href="@{/shops/{id}(id=${favorite.shop.id})}" class="text-decoration-none text-dark">
+
+							<div class="row g-0">
+
+								<!-- 画像 -->
+								<div class="col-md-4">
+
+									<img th:if="${favorite.shop.imageName}"
+										th:src="@{/storage/{image}(image=${favorite.shop.imageName})}"
+										class="card-img-top nagoyameshi-horizontal-card-image">
+
+									<img th:unless="${favorite.shop.imageName}" th:src="@{/images/noImage.png}"
+										class="card-img-top nagoyameshi-horizontal-card-image">
+
+								</div>
+
+								<!-- 本文 -->
+								<div class="col-md-8">
+
+									<div class="card-body">
+
+										<h3 class="card-title mb-3" th:text="${favorite.shop.name}">
+										</h3>
+
+										<hr class="mb-3">
+
+										<p class="card-text mb-2">
+											<span th:text="${favorite.shop.description}">
+											</span>
+										</p>
+
+										<p class="card-text mb-2">
+
+											<small class="text-muted" th:text="${'〒' + favorite.shop.postalCode}">
+											</small>
+
+											<small class="text-muted" th:text="${favorite.shop.address}">
+											</small>
+
+										</p>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<!-- ページネーション -->
+				<nav th:if="${favoritePage.totalPages > 1}">
+
+					<ul class="pagination justify-content-center">
+
+						<!-- 前へ -->
+						<li class="page-item" th:classappend="${favoritePage.first} ? 'disabled'">
+
+							<a class="page-link" th:href="@{/favorites(page=${favoritePage.number - 1})}">
+
+								＜
+
+							</a>
+
+						</li>
+
+						<!-- ページ番号 -->
+						<li class="page-item" th:each="i : ${#numbers.sequence(0, favoritePage.totalPages - 1)}"
+							th:classappend="${i == favoritePage.number} ? 'active'">
+
+							<a class="page-link" th:href="@{/favorites(page=${i})}" th:text="${i + 1}">
+
+							</a>
+
+						</li>
+
+						<!-- 次へ -->
+						<li class="page-item" th:classappend="${favoritePage.last} ? 'disabled'">
+
+							<a class="page-link" th:href="@{/favorites(page=${favoritePage.number + 1})}">
+
+								＞
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+
+	</div>
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>
