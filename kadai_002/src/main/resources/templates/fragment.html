@@ -90,7 +90,7 @@
 								<a class="dropdown-item nagoyameshi-dropdown-item" th:href="@{/user}">会員情報</a>
 								<!--有料会員のみ-->
 								<div sec:authorize="isAuthenticated()"
-									th:if="${#authentication.principal.user.membershipType == 1}">
+									th:if="${membershipType == 1}">
 
 									<a class="dropdown-item nagoyameshi-dropdown-item"
 										th:href="@{/shops/reservations}">予約一覧</a>
