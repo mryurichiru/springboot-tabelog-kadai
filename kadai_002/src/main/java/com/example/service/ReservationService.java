@@ -17,7 +17,6 @@ import com.example.repository.ReservationRepository;
 public class ReservationService {
 	private final ReservationRepository reservationRepository;
 	private final MailService mailService;
-	
 
 	public ReservationService(ReservationRepository reservationRepository, MailService mailService) {
 		this.reservationRepository = reservationRepository;
@@ -49,7 +48,13 @@ public class ReservationService {
 		reservation.setStatus(Reservation.ReservationStatus.CONFIRMED);
 
 		reservationRepository.save(reservation);
-		mailService.sendReservationMail(reservation);
+		// メール送信（失敗しても予約は成立）
+		try {
+			mailService.sendReservationMail(reservation);
+		} catch (Exception e) {
+			System.err.println("予約メール送信に失敗しました。");
+			e.printStackTrace();
+		}
 	}
 
 	//ユーザーの予約一覧
@@ -73,18 +78,17 @@ public class ReservationService {
 		reservationRepository.save(reservation);
 		mailService.sendReservationCancelMail(reservation);
 	}
-	
+
 	//予約ステータス変更
 	@Transactional
 	public void changeStatus(
-	        Integer reservationId,
-	        ReservationStatus status) {
+			Integer reservationId,
+			ReservationStatus status) {
 
-	    Reservation reservation =
-	            reservationRepository.getReferenceById(reservationId);
+		Reservation reservation = reservationRepository.getReferenceById(reservationId);
 
-	    reservation.setStatus(status);
+		reservation.setStatus(status);
 
-	    reservationRepository.save(reservation);
+		reservationRepository.save(reservation);
 	}
 }
