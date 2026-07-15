@@ -26,6 +26,9 @@ public class StripeService {
 
     @Value("${stripe.price-id}")
     private String priceId;
+    
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     // Stripe Checkout Session作成
     public String createStripeSession(User user, HttpServletRequest httpServletRequest) {
@@ -89,11 +92,11 @@ public class StripeService {
 
         try {
 
-            com.stripe.param.billingportal.SessionCreateParams params =
-                    com.stripe.param.billingportal.SessionCreateParams.builder()
-                            .setCustomer(user.getStripeCustomerId())
-                            .setReturnUrl("http://localhost:8080/user")
-                            .build();
+        	com.stripe.param.billingportal.SessionCreateParams params =
+        	        com.stripe.param.billingportal.SessionCreateParams.builder()
+        	                .setCustomer(user.getStripeCustomerId())
+        	                .setReturnUrl(baseUrl + "/user?subscriptionUpdated")
+        	                .build();
 
             com.stripe.model.billingportal.Session portalSession =
                     com.stripe.model.billingportal.Session.create(params);

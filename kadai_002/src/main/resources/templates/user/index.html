@@ -26,6 +26,16 @@
 						</nav>
 
 						<h1 class="mb-3 text-center">会員情報</h1>
+
+						<div th:if="${successMessage}" class="alert alert-info mb-4">
+							<span th:text="${successMessage}"></span>
+						</div>
+
+
+						<div th:if="${param.subscriptionUpdated}" class="alert alert-success mb-4">
+							会員情報を更新しました。
+						</div>
+
 						<td th:switch="${user.membershipType}">
 							<span th:case="${T(com.example.entity.User).FREE_MEMBER}">
 								<span class="badge bg-secondary fs-6 px-3 py-2">無料会員</span>
@@ -41,11 +51,6 @@
 								<a th:href="@{/user/edit}">編集</a>
 							</div>
 						</div>
-
-						<div th:if="${successMessage}" class="alert alert-info mb-4">
-							<span th:text="${successMessage}"></span>
-						</div>
-
 
 						<div class="container mb-4">
 							<div class="row pb-2 mb-2 border-bottom">
@@ -123,9 +128,10 @@
 								class="btn btn-outline-warning">
 								有料会員登録
 							</a>
-							
+
 							<!--契約内容変更-->
-							<a th:if="${user.membershipType == 1}"th:href="@{/subscription/portal}" class="btn btn-outline-primary">
+							<a th:if="${user.membershipType == 1}" th:href="@{/subscription/portal}"
+								class="btn btn-outline-primary">
 								契約内容を管理する
 							</a>
 
