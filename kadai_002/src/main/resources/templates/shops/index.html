@@ -98,18 +98,28 @@
 									<div class="row g-0">
 										<div class="col-md-4">
 											<img th:if="${shop.imageName != null and !shop.imageName.isEmpty()}"
-											     th:src="@{/storage/__${shop.imageName}__}"
-											     class="card-img-top nagoyameshi-horizontal-card-image"
-											     alt="店舗画像">
+												th:src="@{/storage/__${shop.imageName}__}"
+												class="card-img-top nagoyameshi-horizontal-card-image" alt="店舗画像">
 
 											<img th:unless="${shop.imageName != null and !shop.imageName.isEmpty()}"
-											     th:src="@{/images/noImage.png}"
-											     class="card-img-top nagoyameshi-horizontal-card-image"
-											     alt="NO IMAGE">
-											 </div>
+												th:src="@{/images/noImage.png}"
+												class="card-img-top nagoyameshi-horizontal-card-image" alt="NO IMAGE">
+										</div>
 										<div class="col-md-8">
 											<div class="card-body">
-												<h3 class="card-title mb-3" th:text="${shop.getName()}"></h3>
+												<h3 class="card-title mb-2" th:text="${shop.getName()}"></h3>
+												
+												<!--カテゴリタグ追加-->
+												<div class="mb-2">
+													<span th:each="category, stat : ${shop.categories}"
+														th:if="${stat.index < 3}"
+														th:href="@{/shops(category=${category.name})}"
+														class="category-badge text-decoration-none me-1"
+														th:text="'#' + ${category.name}">
+													</span>
+												</div>
+
+
 												<hr class="mb-3">
 												<p class="card-text mb-2">
 													<span th:text="${shop.getDescription()}"></span>
@@ -157,8 +167,8 @@
 				</div>
 			</div>
 		</main>
-		
-<!--フッター-->
+
+		<!--フッター-->
 		<div th:replace="~{fragment :: footer}"></div>
 		<div th:replace="~{fragment :: scripts}"></div>
 	</div>

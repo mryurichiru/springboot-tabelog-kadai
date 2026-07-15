@@ -1,69 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <div th:replace="~{fragment :: meta}"></div>
-    <div th:replace="~{fragment :: styles}"></div>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
 
-    <title>予約完了</title>
+	<title>予約完了</title>
 </head>
 
 <body>
-<div class="nagoyameshi-wrapper">
+	<div class="nagoyameshi-wrapper">
 
-    <!-- ヘッダー -->
-    <div th:replace="~{fragment :: header}"></div>
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
 
-    <main>
-        <div class="container pt-4 pb-5 nagoyameshi-container">
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
 
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
+				<div class="row justify-content-center">
+					<div class="col-lg-6">
 
-                    <div class="card shadow-sm">
-                        <div class="card-body text-center p-5">
+						<div class="card shadow-sm">
+							<div class="card-body text-center p-5">
 
-                            <h2 class="mb-4 text-success">
-                                予約が完了しました
-                            </h2>
+								<h2 class="mb-4 text-success">
+									予約が完了しました
+								</h2>
 
-                            <p class="mb-4">
-                                ご予約ありがとうございます。<br>
-                                当日のご来店をお待ちしております。
-                            </p>
+								<p class="mb-4">
+									ご予約ありがとうございます。<br>
+									当日のご来店をお待ちしております。
+								</p>
 
-                            <div class="d-grid gap-2">
+								<div class="d-grid gap-2">
 
-                                <a th:href="@{/shops/reservations}"
-                                   class="btn text-white shadow-sm nagoyameshi-btn">
+									<a th:href="@{/shops/reservations}"
+										class="btn text-white shadow-sm nagoyameshi-btn">
 
-                                    予約一覧を見る
+										予約一覧を見る
 
-                                </a>
+									</a>
 
-                                <a th:href="@{/shops}"
-                                   class="btn btn-outline-secondary">
+									<a th:href="@{/shops}" class="btn btn-outline-secondary">
 
-                                    店舗一覧へ戻る
+										店舗一覧へ戻る
 
-                                </a>
+									</a>
 
-                            </div>
+								</div>
 
-                        </div>
-                    </div>
+							</div>
+						</div>
 
-                </div>
-            </div>
+					</div>
+				</div>
 
-        </div>
-    </main>
+			</div>
+		</main>
 
-    <!-- フッター -->
-    <div th:replace="~{fragment :: footer}"></div>
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
 
-</div>
+	</div>
+	<div th:replace="~{fragment :: scripts}"></div>
 </body>
+
 </html>
 ```

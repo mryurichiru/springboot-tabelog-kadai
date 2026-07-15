@@ -35,7 +35,7 @@
 
 						<div class="mb-3">
 							<img th:if="${shop.getImageName()}" th:src="@{/storage/__${shop.getImageName()}__}"
-								class="w-100" alt="民宿画像">
+								class="w-100" alt="店舗画像">
 							<img th:unless="${shop.getImageName()}" th:src="@{/images/noImage.png}" class="w-100"
 								alt="NO IMAGE">
 						</div>
@@ -60,6 +60,19 @@
 									<span th:text="${shop.getName()}"></span>
 								</div>
 							</div>
+							
+							<div class="row pb-2 mb-2 border-bottom">
+							    <div class="col-4">
+							        <span class="fw-bold">カテゴリ</span>
+							    </div>
+
+							    <div class="col">
+							        <span th:each="category : ${shop.categories}"
+							              class="category-badge me-2"
+							              th:text="'#' + ${category.name}">
+							        </span>
+							    </div>
+							</div>
 
 							<div class="row pb-2 mb-2 border-bottom">
 								<div class="col-4">
@@ -70,6 +83,30 @@
 									<span class="nagoyameshi-pre-wrap" th:text="${shop.getDescription()}"></span>
 								</div>
 							</div>
+							
+							<div class="row pb-2 mb-2 border-bottom">
+							    <div class="col-4">
+							        <span class="fw-bold">営業時間</span>
+							    </div>
+
+							    <div class="col">
+							        <span th:text="${#temporals.format(shop.openingTime, 'HH:mm')}"></span>
+							        ～
+							        <span th:text="${#temporals.format(shop.closingTime, 'HH:mm')}"></span>
+							    </div>
+							</div>
+
+							<div class="row pb-2 mb-2 border-bottom">
+							    <div class="col-4">
+							        <span class="fw-bold">定休日</span>
+							    </div>
+
+							    <div class="col">
+							        <span th:text="${shop.holiday}"></span>
+							    </div>
+							</div>
+							
+							
 							<div class="row pb-2 mb-2 border-bottom">
 								<div class="col-4">
 									<span class="fw-bold">電話番号</span>

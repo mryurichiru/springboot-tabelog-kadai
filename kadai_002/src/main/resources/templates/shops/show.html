@@ -25,6 +25,7 @@
 								<li class="breadcrumb-item active" aria-current="page">店舗詳細</li>
 							</ol>
 						</nav>
+
 						<div sec:authorize="hasRole('ROLE_GENERAL')"
 							th:if="${loginUser != null && loginUser.membershipType == 1}">
 							<!--お気に入り追加-->
@@ -46,7 +47,10 @@
 								</div>
 							</div>
 						</div>
+
+
 						<h1 class="mb-4 text-center" th:text="${shop.getName()}"></h1>
+
 
 						<div th:if="${errorMessage}" class="alert alert-danger">
 							<span th:text="${errorMessage}"></span>
@@ -59,16 +63,20 @@
 								alt="NO IMAGE">
 						</div>
 
+
+
 						<div class="container">
 							<div class="row">
 								<div class="col-lg-8 container mb-4">
 									<div class="row pb-2 mb-2 border-bottom">
 										<div class="col-4">
-											<span class="fw-bold">店舗名</span>
+											<span class="fw-bold">カテゴリ</span>
 										</div>
 
 										<div class="col">
-											<span th:text="${shop.getName()}"></span>
+											<span th:each="category : ${shop.categories}" class="category-badge me-2"
+												th:text="'#' + ${category.name}">
+											</span>
 										</div>
 									</div>
 
@@ -94,11 +102,23 @@
 
 									<div class="row pb-2 mb-2 border-bottom">
 										<div class="col-4">
-											<span class="fw-bold">郵便番号</span>
+											<span class="fw-bold">営業時間</span>
 										</div>
 
 										<div class="col">
-											<span th:text="${shop.getPostalCode()}"></span>
+											<span th:text="${#temporals.format(shop.openingTime, 'HH:mm')}"></span>
+											～
+											<span th:text="${#temporals.format(shop.closingTime, 'HH:mm')}"></span>
+										</div>
+									</div>
+
+									<div class="row pb-2 mb-2 border-bottom">
+										<div class="col-4">
+											<span class="fw-bold">定休日</span>
+										</div>
+
+										<div class="col">
+											<span th:text="${shop.holiday}"></span>
 										</div>
 									</div>
 
@@ -108,7 +128,8 @@
 										</div>
 
 										<div class="col">
-											<span th:text="${shop.getAddress()}"></span>
+											<div th:text="'〒' + ${shop.postalCode}"></div>
+											<div th:text="${shop.address}"></div>
 										</div>
 									</div>
 
@@ -292,8 +313,8 @@
 		<!-- フッター -->
 		<div th:replace="~{fragment :: footer}"></div>
 
-	<div th:replace="~{fragment :: scripts}"></div>
-</div>
+		<div th:replace="~{fragment :: scripts}"></div>
+	</div>
 </body>
 
 </html>

@@ -108,13 +108,20 @@ public class AdminCategoryController {
 		        @PathVariable Integer id,
 		        RedirectAttributes redirectAttributes) {
 
-		    categoryRepository.deleteById(id);
+		    try {
+		        categoryService.delete(id);
 
-		    redirectAttributes.addFlashAttribute(
-		            "successMessage",
-		            "カテゴリを削除しました。");
+		        redirectAttributes.addFlashAttribute(
+		                "successMessage",
+		                "カテゴリを削除しました。");
+
+		    } catch (IllegalStateException | IllegalArgumentException e) {
+
+		        redirectAttributes.addFlashAttribute(
+		                "errorMessage",
+		                e.getMessage());
+		    }
 
 		    return "redirect:/admin/categories";
 		}
-	
 }

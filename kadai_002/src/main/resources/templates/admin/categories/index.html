@@ -32,10 +32,13 @@
                     </div>
 
                     <!-- メッセージ -->
-                    <div th:if="${successMessage}"
-                         class="alert alert-info">
-                        <span th:text="${successMessage}"></span>
-                    </div>
+					<div th:if="${successMessage}" class="alert alert-success">
+					    <span th:text="${successMessage}"></span>
+					</div>
+
+					<div th:if="${errorMessage}" class="alert alert-danger">
+					    <span th:text="${errorMessage}"></span>
+					</div>
 
                     <!-- 一覧 -->
                     <table class="table table-hover align-middle">

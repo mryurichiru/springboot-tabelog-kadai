@@ -2,6 +2,7 @@ package com.example.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -70,5 +71,5 @@ private Timestamp updatedAt;
     joinColumns = @JoinColumn(name = "shop_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id")
 )
-private List<Category> categories;
+private List<Category> categories = new ArrayList<>();
 }
