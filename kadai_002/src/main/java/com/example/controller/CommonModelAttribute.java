@@ -30,6 +30,9 @@ public class CommonModelAttribute {
         User user = userRepository.findById(userDetails.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
 
+        System.out.println("ControllerAdvice membershipType = " + user.getMembershipType());
+
+        
         return user.getMembershipType();
     }
 }

@@ -96,7 +96,11 @@ public class StripeWebhookController {
 
 	    	// DBに保存
 	    	userRepository.save(user);
-
+	    	
+	    	User updatedUser = userRepository.findByStripeCustomerId(stripeCustomerId)
+	    	        .orElseThrow();
+	    	System.out.println("Webhook membershipType = " + updatedUser.getMembershipType());
+	    	
 	    	System.out.println("Stripe顧客ID: " + stripeCustomerId + " のユーザーのサブスクを解約し、無料会員へダウングレードしました。");
 	    }
 	    return ResponseEntity.ok("");
